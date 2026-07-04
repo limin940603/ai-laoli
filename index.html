@@ -83,6 +83,40 @@ footer .plats span{border:1px solid #4a423c;border-radius:999px;padding:5px 14px
 /* 入场动效 */
 .reveal{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.3,1)}
 .reveal.in{opacity:1;transform:none}
+/* ===== 动效升级 2026-07-04(只新增,详见 reports/网站动效教学第二期/方案设计.md)===== */
+/* 1 小熊互动彩蛋:hover歪头,点击蹦跳+冒问号 */
+.mascot-disc{position:relative;cursor:pointer}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.mascot-disc:hover img{animation:wiggle .6s ease-in-out}
+@keyframes boing{40%{transform:translateY(-14px) scale(1.05)}}
+.mascot-disc.boing img{animation:boing .5s cubic-bezier(.3,1.4,.5,1)}
+@keyframes popq{15%{opacity:1}100%{opacity:0;transform:translateY(-90px) scale(1.2)}}
+.qpop{position:absolute;font-weight:900;color:var(--o);opacity:0;pointer-events:none;animation:popq 1.2s ease-out forwards}
+/* 2 Hero入场编排:四层依次浮现 */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hero .kicker,.hero h1,.hero p.lead,.hero .plat{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards}
+.hero h1{animation-delay:.15s}.hero p.lead{animation-delay:.3s}.hero .plat{animation-delay:.45s}
+/* 3 氛围层:圆环慢旋转+问号圆片漂浮(低速不抢戏) */
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero .ring{animation:spin 60s linear infinite}
+@keyframes floaty{50%{transform:translateY(-9px)}}
+.hero .chip{animation:floaty 3.2s ease-in-out infinite}
+.hero .chip+.chip{animation-delay:1.6s}
+/* 4 卡片错峰浮现:同排卡片多米诺式 */
+.cols .reveal:nth-child(2),.works .reveal:nth-child(2){transition-delay:.1s}
+.cols .reveal:nth-child(3),.works .reveal:nth-child(3){transition-delay:.2s}
+.cols .reveal:nth-child(4),.works .reveal:nth-child(4){transition-delay:.3s}
+.cols .reveal:nth-child(5),.works .reveal:nth-child(5){transition-delay:.4s}
+/* 5 判断表tab切换滑入 */
+@keyframes tabin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.judge.slidein{animation:tabin .35s cubic-bezier(.2,.7,.3,1)}
+/* 6 顶部阅读进度条(品牌橙) */
+#readbar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--o);z-index:99}
+/* 无障碍:晕动症用户一键全关 */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal,.hero .kicker,.hero h1,.hero p.lead,.hero .plat{opacity:1;transform:none}
+}
 @media(max-width:860px){
   .hero .grid{grid-template-columns:1fr}
   .mascot-disc{width:260px;height:260px}
@@ -223,6 +257,28 @@ document.querySelectorAll('.jtab').forEach(b => b.addEventListener('click', () =
   document.getElementById('jt1').style.display = b.dataset.t === 'jt1' ? '' : 'none';
   document.getElementById('jt2').style.display = b.dataset.t === 'jt2' ? '' : 'none';
 }));
+/* ===== 动效升级 2026-07-04(只新增) ===== */
+// 小熊彩蛋:点击蹦跳+冒出3个问号飘散
+const disc = document.querySelector('.mascot-disc');
+if (disc) disc.addEventListener('click', () => {
+  disc.classList.remove('boing'); void disc.offsetWidth; disc.classList.add('boing');
+  for (let i = 0; i < 3; i++) {
+    const q = document.createElement('span'); q.className = 'qpop'; q.textContent = '?';
+    q.style.cssText = `left:${25 + Math.random() * 50}%;top:${15 + Math.random() * 30}%;font-size:${20 + Math.random() * 18}px;animation-delay:${i * .12}s`;
+    disc.appendChild(q); setTimeout(() => q.remove(), 1700);
+  }
+});
+// 判断表tab切换滑入(不改上面原切换逻辑,只补动画类)
+document.querySelectorAll('.jtab').forEach(b => b.addEventListener('click', () => {
+  const t = document.getElementById(b.dataset.t);
+  t.classList.remove('slidein'); void t.offsetWidth; t.classList.add('slidein');
+}));
+// 顶部阅读进度条
+const bar = document.createElement('div'); bar.id = 'readbar'; document.body.appendChild(bar);
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  bar.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 100) + '%';
+}, { passive: true });
 </script>
 </body>
 </html>
