@@ -92,16 +92,17 @@ footer .plats span{border:1px solid #4a423c;border-radius:999px;padding:5px 14px
 .mascot-disc.boing img{animation:boing .5s cubic-bezier(.3,1.4,.5,1)}
 @keyframes popq{15%{opacity:1}100%{opacity:0;transform:translateY(-90px) scale(1.2)}}
 .qpop{position:absolute;font-weight:900;color:var(--o);opacity:0;pointer-events:none;animation:popq 1.2s ease-out forwards}
-/* 2 Hero入场编排:四层依次浮现 */
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-.hero .kicker,.hero h1,.hero p.lead,.hero .plat{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards}
-.hero h1{animation-delay:.15s}.hero p.lead{animation-delay:.3s}.hero .plat{animation-delay:.45s}
-/* 3 氛围层:圆环慢旋转+问号圆片漂浮(低速不抢戏) */
+/* 2 Hero入场编排:四层依次浮现(2026-07-04 加大幅度提升可感知度) */
+@keyframes rise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+.hero .kicker,.hero h1,.hero p.lead,.hero .plat{opacity:0;animation:rise .85s cubic-bezier(.2,.7,.3,1) forwards}
+.hero h1{animation-delay:.18s}.hero p.lead{animation-delay:.36s}.hero .plat{animation-delay:.54s}
+/* 3 氛围层:圆环旋转+问号圆片漂浮+小熊呼吸浮动 */
 @keyframes spin{to{transform:rotate(360deg)}}
-.hero .ring{animation:spin 60s linear infinite}
-@keyframes floaty{50%{transform:translateY(-9px)}}
-.hero .chip{animation:floaty 3.2s ease-in-out infinite}
-.hero .chip+.chip{animation-delay:1.6s}
+.hero .ring{animation:spin 36s linear infinite}
+@keyframes floaty{50%{transform:translateY(-12px)}}
+.hero .chip{animation:floaty 2.6s ease-in-out infinite}
+.hero .chip+.chip{animation-delay:1.3s}
+.mascot-disc img{animation:floaty 3.6s ease-in-out infinite}
 /* 4 卡片错峰浮现:同排卡片多米诺式 */
 .cols .reveal:nth-child(2),.works .reveal:nth-child(2){transition-delay:.1s}
 .cols .reveal:nth-child(3),.works .reveal:nth-child(3){transition-delay:.2s}
@@ -111,7 +112,7 @@ footer .plats span{border:1px solid #4a423c;border-radius:999px;padding:5px 14px
 @keyframes tabin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .judge.slidein{animation:tabin .35s cubic-bezier(.2,.7,.3,1)}
 /* 6 顶部阅读进度条(品牌橙) */
-#readbar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--o);z-index:99}
+#readbar{position:fixed;top:0;left:0;height:4px;width:0;background:var(--o);z-index:99}
 /* 无障碍:晕动症用户一键全关 */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
